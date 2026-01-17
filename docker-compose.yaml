@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  ubuntu:
+    build: .
+    container_name: new_container
+    network_mode: "host"
+    tty: true
+    stdin_open: true
+    privileged: true 
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      - XAUTHORITY=/home/ubuntu/.Xauthority
+    devices:
+      - /dev/input/js0:/dev/input/js0  
+    volumes:
+      - ./workspace:/home/ubuntu/workspace
+      - unitree_opt:/opt/unitree_robotics
+      - mujoco_home:/home/ubuntu/.mujoco
+      - user_cache:/home/ubuntu/.cache
+      - user_local:/home/ubuntu/.local
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ${XAUTHORITY}:/home/ubuntu/.Xauthority:rw
+
+volumes:
+  unitree_opt:
+  mujoco_home:
+  user_cache:
+  user_local:
+
