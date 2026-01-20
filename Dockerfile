@@ -24,8 +24,34 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     pkg-config \
     bash-completion \
     libeigen3-dev \
+    libglib2.0-0 \
+    libsm6 \
+    libxrender1 \
+    libxext6 \
+    libxcb1 \
+    libxcb-render0 \
+    libxcb-render-util0 \
+    libxcb-shape0 \
+    libxcb-xfixes0 \
+    libxcb-shm0 \
+    libxcb-keysyms1 \
+    libxcb-icccm4 \
+    libxcb-image0 \
+    libxcb-randr0 \
+    libxcb-sync1 \
+    libxcb-xinerama0 \
+    libxcb-util1 \
+    libxkbcommon-x11-0 \
+    libgl1 \
+    libglx-mesa0 \
+    libgl1-mesa-dri \
+    libegl1 \
+    libgles2 \
+    mesa-utils \
+    libqt5gui5 \
+    libqt5widgets5 \
+    libqt5core5a \
  && rm -rf /var/lib/apt/lists/*
-
 # ----------------------------
 # Locale
 # ----------------------------
