@@ -7,7 +7,7 @@
     </node>
     <node pkg="rviz2" exec="rviz2" on_exit="shutdown" args="-d $(find-pkg-share g1_bringup)/config/g1.rviz"/>
     
-    <node pkg="joint_state_publisher_gui" exec="joint_state_publisher_gui" if="$(eval '\'$(var use_jsp)\'==\'gui\'')"/>
-    <node pkg="joint_state_publisher" exec="joint_state_publisher" if="$(eval '\'$(var use_jsp)\'==\'jsp\'')"/>
+    <!-- <node pkg="joint_state_publisher_gui" exec="joint_state_publisher_gui" if="$(eval '\'$(var use_jsp)\'==\'gui\'')"/>
+    <node pkg="joint_state_publisher" exec="joint_state_publisher" if="$(eval '\'$(var use_jsp)\'==\'jsp\'')"/> -->
 
 </launch>

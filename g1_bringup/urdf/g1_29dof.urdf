@@ -1,4 +1,4 @@
-<robot name="g1_29dof">
+<robot name="g1_29dof" xmlns:xacro="http://www.ros.org/wiki/xacro">
   
   <link name="world"></link>
   <joint name="floating_base_joint" type="fixed">
@@ -1079,4 +1079,6 @@
       </material>
     </visual>
   </link>
+  <!-- In your g1_bringup URDF, add this near the end: -->
+  <xacro:include filename="$(find g1_bringup)/urdf/g1_29dof_ros2control.urdf.xacro" />
 </robot>
