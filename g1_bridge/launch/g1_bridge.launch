@@ -1,0 +1,3 @@
+<launch>
+    <node pkg="g1_bridge" exec="jsPublisher" />
+</launch>
