@@ -1,9 +1,10 @@
 <robot name="g1_29dof" xmlns:xacro="http://www.ros.org/wiki/xacro">
   
-  <link name="world"></link>
+  <link name="base_link"></link>
   <joint name="floating_base_joint" type="fixed">
-    <parent link="world"/>
+    <parent link="base_link"/>
     <child link="pelvis"/>
+    <origin xyz="0 0 0.78" rpy="0 0 0"/>
   </joint>
 
   <link name="pelvis">

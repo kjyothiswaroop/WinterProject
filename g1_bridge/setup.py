@@ -25,6 +25,7 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
         *recursive_files('share/' + package_name, 'launch'),
+        *recursive_files('share/' + package_name, 'config'),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
