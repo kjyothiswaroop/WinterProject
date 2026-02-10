@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- Nav2 Bringup with RViz for Unitree G1 -->
+    <!-- This launch file directly includes bringup_launch.py and rviz_launch.py
+         from nav2_bringup, using custom nav2 params from g1_bridge.
+         RTABMap is expected to provide localization (map->odom transform and /map topic). -->
+
+    <!-- Launch Arguments -->
+    <arg name="namespace" default=""/>
+    <arg name="slam" default="False"/>
+    <arg name="map" default=""/>
+    <arg name="graph" default=""/>
+    <arg name="use_sim_time" default="false"/>
+    <arg name="params_file" default="$(find-pkg-share g1_bridge)/config/nav2_params.yaml"/>
+    <arg name="autostart" default="true"/>
+    <arg name="use_composition" default="True"/>
+    <arg name="use_respawn" default="False"/>
+    <arg name="use_rviz" default="True"/>
+    <arg name="rviz_config_file" default="$(find-pkg-share nav2_bringup)/rviz/nav2_default_view.rviz"/>
+    <arg name="use_localization" default="False"/>
+    <arg name="log_level" default="info"/>
+
+    <!-- RViz -->
+    <include file="$(find-pkg-share nav2_bringup)/launch/rviz_launch.py" if="$(var use_rviz)">
+        <arg name="namespace" value="$(var namespace)"/>
+        <arg name="use_sim_time" value="$(var use_sim_time)"/>
+        <arg name="rviz_config" value="$(var rviz_config_file)"/>
+    </include>
+
+    <!-- Nav2 Bringup (navigation + optional localization) -->
+    <include file="$(find-pkg-share nav2_bringup)/launch/bringup_launch.py">
+        <arg name="namespace" value="$(var namespace)"/>
+        <arg name="slam" value="$(var slam)"/>
+        <arg name="map" value="$(var map)"/>
+        <arg name="graph" value="$(var graph)"/>
+        <arg name="use_sim_time" value="$(var use_sim_time)"/>
+        <arg name="params_file" value="$(var params_file)"/>
+        <arg name="autostart" value="$(var autostart)"/>
+        <arg name="use_composition" value="$(var use_composition)"/>
+        <arg name="use_respawn" value="$(var use_respawn)"/>
+        <arg name="use_localization" value="$(var use_localization)"/>
+        <arg name="use_keepout_zones" value="False"/>
+        <arg name="use_speed_zones" value="False"/>
+        <arg name="log_level" value="$(var log_level)"/>
+    </include>
+</launch>
