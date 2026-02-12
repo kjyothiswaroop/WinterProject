@@ -246,6 +246,7 @@ local_costmap:
         z_voxels: 16
         max_obstacle_height: 2.0
         mark_threshold: 0
+        track_unknown_space: true
         observation_sources: scan
         scan:
           # A relative topic will be appended to the parent of the local_costmap namespace.

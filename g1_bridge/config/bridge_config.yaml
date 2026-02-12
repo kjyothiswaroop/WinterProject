@@ -1,0 +1,18 @@
+name: unitree_slam_bridge
+from_domain: 0
+to_domain: 1
+topics:
+  joint_states:
+    type: sensor_msgs/msg/JointState
+  robot_desciption:
+    type: std_msgs/msg/String
+  tf:
+    type: tf2_msgs/msg/TFMessage
+  tf_static:
+    type: tf2_msgs/msg/TFMessage
+    qos:
+      durability: transient_local
+  cmd_vel:
+    type: geometry_msgs/msg/TwistStamped
+    from_domain: 1  
+    to_domain: 0

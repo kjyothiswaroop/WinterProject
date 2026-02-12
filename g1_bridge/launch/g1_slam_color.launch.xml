@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- G1 SLAM with RTABMap and RealSense D435 (COLOR mode) -->
+    <!-- Uses RGB color camera for SLAM (depth aligned to color).
+         Includes depthimage_to_laserscan for Nav2 obstacle detection. -->
+
+    <!-- Launch Arguments -->
+    <arg name="unite_imu_method" default="2"
+         description="0-None, 1-copy, 2-linear_interpolation"/>
+    <arg name="args" default=""
+         description="Extra arguments for rtabmap and odometry nodes"/>
+    <arg name="odom_args" default=""
+         description="Extra arguments just for odometry node"/>
+    <arg name="localization" default="false"
+         description="Launch rtabmap in localization mode (true/false)"/>
+
+    <!-- Enable IR emitter for active depth with color -->
+    <set_parameter name="depth_module.emitter_enabled" value="1"/>
+
+    <!-- RealSense D435 Camera Driver -->
+    <include file="$(find-pkg-share realsense2_camera)/launch/rs_launch.py">
+        <arg name="camera_namespace" value=""/>
+        <arg name="enable_gyro" value="true"/>
+        <arg name="enable_accel" value="true"/>
+        <arg name="unite_imu_method" value="$(var unite_imu_method)"/>
+        <arg name="align_depth.enable" value="true"/>
+        <arg name="enable_sync" value="true"/>
+        <arg name="rgb_camera.profile" value="640x360x30"/>
+    </include>
+
+    <!-- RTABMap Visual Odometry -->
+    <node pkg="rtabmap_odom" exec="rgbd_odometry" output="screen"
+          args="$(var args) $(var odom_args)">
+        <param name="frame_id" value="base_link"/>
+        <param name="subscribe_depth" value="true"/>
+        <param name="subscribe_odom_info" value="true"/>
+        <param name="approx_sync" value="false"/>
+        <param name="wait_imu_to_init" value="true"/>
+        <remap from="imu" to="/imu/data"/>
+        <remap from="rgb/image" to="/camera/color/image_raw"/>
+        <remap from="rgb/camera_info" to="/camera/color/camera_info"/>
+        <remap from="depth/image" to="/camera/aligned_depth_to_color/image_raw"/>
+    </node>
+
+    <!-- RTABMap SLAM Mode (default) -->
+    <node pkg="rtabmap_slam" exec="rtabmap" output="screen"
+          unless="$(var localization)"
+          args="-d $(var args)">
+        <param name="frame_id" value="base_link"/>
+        <param name="subscribe_depth" value="true"/>
+        <param name="subscribe_odom_info" value="true"/>
+        <param name="approx_sync" value="false"/>
+        <param name="wait_imu_to_init" value="true"/>
+        <remap from="imu" to="/imu/data"/>
+        <remap from="rgb/image" to="/camera/color/image_raw"/>
+        <remap from="rgb/camera_info" to="/camera/color/camera_info"/>
+        <remap from="depth/image" to="/camera/aligned_depth_to_color/image_raw"/>
+    </node>
+
+    <!-- RTABMap Localization Mode -->
+    <node pkg="rtabmap_slam" exec="rtabmap" output="screen"
+          if="$(var localization)"
+          args="$(var args)">
+        <param name="frame_id" value="base_link"/>
+        <param name="subscribe_depth" value="true"/>
+        <param name="subscribe_odom_info" value="true"/>
+        <param name="approx_sync" value="false"/>
+        <param name="wait_imu_to_init" value="true"/>
+        <param name="Mem/IncrementalMemory" type="str" value="False"/>
+        <param name="Mem/InitWMWithAllNodes" type="str" value="True"/>
+        <remap from="imu" to="/imu/data"/>
+        <remap from="rgb/image" to="/camera/color/image_raw"/>
+        <remap from="rgb/camera_info" to="/camera/color/camera_info"/>
+        <remap from="depth/image" to="/camera/aligned_depth_to_color/image_raw"/>
+    </node>
+
+    <!-- RTABMap Visualization -->
+    <node pkg="rtabmap_viz" exec="rtabmap_viz" output="screen">
+        <param name="frame_id" value="base_link"/>
+        <param name="subscribe_depth" value="true"/>
+        <param name="subscribe_odom_info" value="true"/>
+        <param name="approx_sync" value="false"/>
+        <param name="wait_imu_to_init" value="true"/>
+        <remap from="imu" to="/imu/data"/>
+        <remap from="rgb/image" to="/camera/color/image_raw"/>
+        <remap from="rgb/camera_info" to="/camera/color/camera_info"/>
+        <remap from="depth/image" to="/camera/aligned_depth_to_color/image_raw"/>
+    </node>
+
+    <!-- IMU Filter (computes orientation from raw accelerometer/gyroscope) -->
+    <node pkg="imu_filter_madgwick" exec="imu_filter_madgwick_node" output="screen">
+        <param name="use_mag" value="false"/>
+        <param name="world_frame" value="enu"/>
+        <param name="publish_tf" value="false"/>
+        <remap from="imu/data_raw" to="/camera/imu"/>
+    </node>
+
+    <!-- Depth Image to LaserScan for Nav2 obstacle detection (localization only) -->
+    <node pkg="depthimage_to_laserscan" exec="depthimage_to_laserscan_node"
+          name="depthimage_to_laserscan" output="screen"
+          if="$(var localization)">
+        <param name="scan_height" value="10"/>
+        <param name="scan_time" value="0.033"/>
+        <param name="range_min" value="0.2"/>
+        <param name="range_max" value="4.0"/>
+        <param name="output_frame" value="camera_depth_frame"/>
+        <remap from="depth" to="/camera/aligned_depth_to_color/image_raw"/>
+        <remap from="depth_camera_info" to="/camera/color/camera_info"/>
+    </node>
+</launch>

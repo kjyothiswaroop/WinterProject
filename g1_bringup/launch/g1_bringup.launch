@@ -3,4 +3,8 @@
         <param name="robot_description" value="$(command '$(exec-in-pkg xacro xacro) $(find-pkg-share g1_bringup)/urdf/g1_29dof.urdf') " />
     </node>
     <node pkg="rviz2" exec="rviz2" on_exit="shutdown" args="-d $(find-pkg-share g1_bringup)/config/g1.rviz"/>
+
+    <node
+    pkg="tf2_ros" exec="static_transform_publisher"
+    args="--x -0 --y 0 --z 0 --yaw 0 --pitch 0 --roll 0 --frame-id d435_link --child-frame-id camera_link"/>
 </launch>
