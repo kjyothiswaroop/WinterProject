@@ -40,7 +40,8 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'jsPublisher = g1_bridge.jsPublisher:main'
+            'jsPublisher = g1_bridge.jsPublisher:main',
+            'odomPublisher = g1_bridge.odomPublisher:main',
         ],
     },
 )
