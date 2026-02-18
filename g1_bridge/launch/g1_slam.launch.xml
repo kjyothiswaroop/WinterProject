@@ -28,10 +28,14 @@
         <arg name="enable_sync" value="true"/>
     </include>
 
-    <!-- RTABMap Visual Odometry -->
+    <!-- G1 Leg Odometry Bridge (SportModeState -> nav_msgs/Odometry on /leg_odom) -->
+    <node pkg="g1_bridge" exec="odomPublisher" output="screen"/>
+
+    <!-- RTABMap Visual Odometry (publishes to /visual_odom) -->
     <node pkg="rtabmap_odom" exec="rgbd_odometry" output="screen"
           args="$(var args) $(var odom_args)">
         <param name="frame_id" value="base_link"/>
+        <param name="publish_tf" value="false"/>
         <param name="subscribe_depth" value="true"/>
         <param name="subscribe_odom_info" value="true"/>
         <param name="approx_sync" value="false"/>
@@ -40,31 +44,38 @@
         <remap from="rgb/image" to="/camera/infra1/image_rect_raw"/>
         <remap from="rgb/camera_info" to="/camera/infra1/camera_info"/>
         <remap from="depth/image" to="/camera/depth/image_rect_raw"/>
+        <remap from="odom" to="/visual_odom"/>
     </node>
 
-    <!-- RTABMap SLAM Mode (default) -->
+    <!-- EKF: fuses leg odom + visual odom -> /odometry/filtered, broadcasts odom->base_link TF -->
+    <node pkg="robot_localization" exec="ekf_node" name="ekf_filter_node" output="screen">
+        <param from="$(find-pkg-share g1_bridge)/config/ekf.yaml"/>
+    </node>
+
+    <!-- RTABMap SLAM Mode (default) — uses fused odometry -->
     <node pkg="rtabmap_slam" exec="rtabmap" output="screen"
           unless="$(var localization)"
           args="-d $(var args)">
         <param name="frame_id" value="base_link"/>
         <param name="subscribe_depth" value="true"/>
-        <param name="subscribe_odom_info" value="true"/>
-        <param name="approx_sync" value="false"/>
+        <param name="subscribe_odom_info" value="false"/>
+        <param name="approx_sync" value="true"/>
         <param name="wait_imu_to_init" value="true"/>
         <remap from="imu" to="/imu/data"/>
         <remap from="rgb/image" to="/camera/infra1/image_rect_raw"/>
         <remap from="rgb/camera_info" to="/camera/infra1/camera_info"/>
         <remap from="depth/image" to="/camera/depth/image_rect_raw"/>
+        <remap from="odom" to="/odometry/filtered"/>
     </node>
 
-    <!-- RTABMap Localization Mode -->
+    <!-- RTABMap Localization Mode — uses fused odometry -->
     <node pkg="rtabmap_slam" exec="rtabmap" output="screen"
           if="$(var localization)"
           args="$(var args)">
         <param name="frame_id" value="base_link"/>
         <param name="subscribe_depth" value="true"/>
-        <param name="subscribe_odom_info" value="true"/>
-        <param name="approx_sync" value="false"/>
+        <param name="subscribe_odom_info" value="false"/>
+        <param name="approx_sync" value="true"/>
         <param name="wait_imu_to_init" value="true"/>
         <param name="Mem/IncrementalMemory" type="str" value="False"/>
         <param name="Mem/InitWMWithAllNodes" type="str" value="True"/>
@@ -72,19 +83,21 @@
         <remap from="rgb/image" to="/camera/infra1/image_rect_raw"/>
         <remap from="rgb/camera_info" to="/camera/infra1/camera_info"/>
         <remap from="depth/image" to="/camera/depth/image_rect_raw"/>
+        <remap from="odom" to="/odometry/filtered"/>
     </node>
 
-    <!-- RTABMap Visualization -->
+    <!-- RTABMap Visualization — uses fused odometry -->
     <node pkg="rtabmap_viz" exec="rtabmap_viz" output="screen">
         <param name="frame_id" value="base_link"/>
         <param name="subscribe_depth" value="true"/>
-        <param name="subscribe_odom_info" value="true"/>
-        <param name="approx_sync" value="false"/>
+        <param name="subscribe_odom_info" value="false"/>
+        <param name="approx_sync" value="true"/>
         <param name="wait_imu_to_init" value="true"/>
         <remap from="imu" to="/imu/data"/>
         <remap from="rgb/image" to="/camera/infra1/image_rect_raw"/>
         <remap from="rgb/camera_info" to="/camera/infra1/camera_info"/>
         <remap from="depth/image" to="/camera/depth/image_rect_raw"/>
+        <remap from="odom" to="/odometry/filtered"/>
     </node>
 
     <!-- IMU Filter (computes orientation from raw accelerometer/gyroscope) -->

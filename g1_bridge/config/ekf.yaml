@@ -1,0 +1,34 @@
+ekf_filter_node:
+  ros__parameters:
+    frequency: 50.0
+    two_d_mode: false
+    publish_tf: true
+    publish_acceleration: false
+
+    map_frame: map
+    odom_frame: odom
+    base_link_frame: base_link
+    world_frame: odom
+
+    # Leg odometry (from odomPublisher): trust x, y, z position and full orientation
+    odom0: /leg_odom
+    odom0_config: [true,  true,  true,     # x, y, z
+                   true,  true,  true,     # roll, pitch, yaw
+                   false, false, false,    # vx, vy, vz
+                   false, false, false,    # vroll, vpitch, vyaw
+                   false, false, false]    # ax, ay, az
+    odom0_differential: false
+    odom0_relative: false
+    odom0_queue_size: 10
+
+    # Visual odometry (from RTABMap rgbd_odometry): trust velocities
+    # Using differential mode so VO drift doesn't fight leg odom absolute pose
+    odom1: /visual_odom
+    odom1_config: [false, false, false,    # x, y, z
+                   false, false, false,    # roll, pitch, yaw
+                   true,  true,  true,     # vx, vy, vz
+                   true,  true,  true,     # vroll, vpitch, vyaw
+                   false, false, false]    # ax, ay, az
+    odom1_differential: false
+    odom1_relative: false
+    odom1_queue_size: 10
