@@ -158,11 +158,11 @@
     <node pkg="depthimage_to_laserscan" exec="depthimage_to_laserscan_node"
           name="depthimage_to_laserscan" output="screen"
           if="$(var localization)">
-        <param name="scan_height" value="60"/>
+        <param name="scan_height" value="10"/>
         <param name="scan_time" value="0.033"/>
         <param name="range_min" value="0.2"/>
         <param name="range_max" value="4.0"/>
-        <param name="output_frame" value="camera_depth_frame"/>
+        <param name="output_frame" value="camera_link"/>
         <remap from="depth" to="/camera/aligned_depth_to_color/image_raw"/>
         <remap from="depth_camera_info" to="/camera/color/camera_info"/>
         <remap from="scan" to="/camera_scan"/>

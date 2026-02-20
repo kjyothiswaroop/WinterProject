@@ -1,0 +1,11 @@
+/** :
+  ros__parameters:
+    dbpath: /home/kjs/.ros/rtabmap.db
+    export_dir: /home/kjs/.ros
+    server_url: http://129.105.69.11:8000
+    objects:
+      - white fridge
+      - yellow board
+      - kitchen
+    debug: false
+    semantic_json_path: /home/kjs/.ros/semantic_map.json

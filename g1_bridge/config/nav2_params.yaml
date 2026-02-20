@@ -1097,11 +1097,17 @@ collision_monitor:
       min_points: 6
       visualize: False
       enabled: True
-    observation_sources: ["scan"]
+    observation_sources: ["scan", "camera_scan"]
     scan:
       type: "scan"
-      topic: "scan"
+      topic: /scan
       min_height: 0.15
+      max_height: 2.0
+      enabled: True
+    camera_scan:
+      type: "scan"
+      topic: /camera_scan
+      min_height: 0.0
       max_height: 2.0
       enabled: True
 
