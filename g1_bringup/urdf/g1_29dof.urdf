@@ -1080,6 +1080,4 @@
       </material>
     </visual>
   </link>
-  <!-- In your g1_bringup URDF, add this near the end: -->
-  <xacro:include filename="$(find g1_bringup)/urdf/g1_29dof_ros2control.urdf.xacro" />
 </robot>

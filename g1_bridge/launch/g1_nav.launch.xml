@@ -19,6 +19,8 @@
     <arg name="rviz_config_file" default="$(find-pkg-share nav2_bringup)/rviz/nav2_default_view.rviz"/>
     <arg name="use_localization" default="False"/>
     <arg name="log_level" default="info"/>
+    <arg name="semantic" default="false"
+         description="Launch semantic navigation nodes (true/false)"/>
 
     <!-- Robot State Publisher for RViz Visualization (Domain 1) -->
     <!-- This only provides robot_description parameter for RViz, doesn't publish TF -->
@@ -51,4 +53,10 @@
         <arg name="use_speed_zones" value="False"/>
         <arg name="log_level" value="$(var log_level)"/>
     </include>
+
+    <!-- Semantic Navigation (optional) -->
+    <group if="$(var semantic)">
+        <node pkg="g1_semantic_nav" exec="semantic_viz" output="screen"/>
+        <node pkg="g1_semantic_nav" exec="nav_goal_server" output="screen"/>
+    </group>
 </launch>

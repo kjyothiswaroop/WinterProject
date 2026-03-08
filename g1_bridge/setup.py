@@ -42,6 +42,7 @@ setup(
         'console_scripts': [
             'jsPublisher = g1_bridge.jsPublisher:main',
             'odomPublisher = g1_bridge.odomPublisher:main',
+            'frontier_explorer = g1_bridge.frontier_explorer:main',
         ],
     },
 )

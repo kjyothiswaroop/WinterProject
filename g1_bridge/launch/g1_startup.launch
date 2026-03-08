@@ -1,0 +1,14 @@
+<launch>
+    <!-- G1 Startup: bridge first (required), then bringup -->
+    <!-- Run with ROS_DOMAIN_ID=0 and unitree_ros2 sourced -->
+
+    <!-- g1_bridge nodes (jsPublisher + camera TF) — MUST come first -->
+    <node pkg="g1_bridge" exec="jsPublisher" />
+
+    <!-- g1_bringup nodes (robot_state_publisher, rviz, camera TF) -->
+    <node pkg="robot_state_publisher" exec="robot_state_publisher">
+        <param name="robot_description" value="$(command '$(exec-in-pkg xacro xacro) $(find-pkg-share g1_bringup)/urdf/g1_29dof.urdf') " />
+    </node>
+<node pkg="tf2_ros" exec="static_transform_publisher"
+          args="--x 0 --y 0 --z 0 --yaw 0 --pitch 0 --roll 0 --frame-id d435_link --child-frame-id camera_link"/>
+</launch>

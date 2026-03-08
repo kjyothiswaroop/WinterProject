@@ -154,10 +154,9 @@
         <remap from="imu/data" to="/livox/imu/filtered"/>
     </node>
 
-    <!-- Depth Image to LaserScan for Nav2 forward obstacle detection (localization only) -->
+    <!-- Depth Image to LaserScan for Nav2 forward obstacle detection (always active) -->
     <node pkg="depthimage_to_laserscan" exec="depthimage_to_laserscan_node"
-          name="depthimage_to_laserscan" output="screen"
-          if="$(var localization)">
+          name="depthimage_to_laserscan" output="screen">
         <param name="scan_height" value="10"/>
         <param name="scan_time" value="0.033"/>
         <param name="range_min" value="0.2"/>
@@ -168,10 +167,9 @@
         <remap from="scan" to="/camera_scan"/>
     </node>
 
-    <!-- Lidar PointCloud to LaserScan for Nav2 obstacle detection (localization only) -->
+    <!-- Lidar PointCloud to LaserScan for Nav2 obstacle detection (always active) -->
     <node pkg="pointcloud_to_laserscan" exec="pointcloud_to_laserscan_node"
-          name="pointcloud_to_laserscan" output="screen"
-          if="$(var localization)">
+          name="pointcloud_to_laserscan" output="screen">
         <param name="min_height" value="0.15"/>
         <param name="max_height" value="1.5"/>
         <param name="range_min" value="0.6"/>

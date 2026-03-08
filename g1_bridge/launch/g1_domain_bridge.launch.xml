@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- Domain Bridge: bridges topics between Domain 0 (unitree) and Domain 1 (ROS2 stack) -->
+    <!-- Run with no ROS_DOMAIN_ID set -->
+    <node pkg="domain_bridge" exec="domain_bridge" output="screen"
+          args="$(find-pkg-share g1_bridge)/config/bridge_config.yaml"/>
+</launch>

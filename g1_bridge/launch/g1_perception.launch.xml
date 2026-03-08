@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- G1 Perception: Livox driver + SLAM -->
+    <!-- Run with ROS_DOMAIN_ID=1 and kilted sourced -->
+
+    <!-- Launch Arguments -->
+    <arg name="localization" default="false"
+         description="Run SLAM in localization mode (true/false)"/>
+
+    <!-- Livox MID360 Driver -->
+    <include file="$(find-pkg-share livox_ros_driver2)/launch_ROS2/lidar_MID360_launch.py"/>
+
+    <!-- SLAM -->
+    <include file="$(find-pkg-share g1_bridge)/launch/g1_slam_icp.launch.xml">
+        <arg name="localization" value="$(var localization)"/>
+    </include>
+</launch>
