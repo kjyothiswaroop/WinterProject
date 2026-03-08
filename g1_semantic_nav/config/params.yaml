@@ -8,4 +8,4 @@
       - yellow board
       - kitchen
     debug: false
-    semantic_json_path: /home/kjs/.ros/semantic_map.json
+    semantic_json_path: ~/.ros/semantic_map.json

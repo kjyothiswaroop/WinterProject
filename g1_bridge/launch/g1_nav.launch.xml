@@ -16,11 +16,13 @@
     <arg name="use_composition" default="True"/>
     <arg name="use_respawn" default="False"/>
     <arg name="use_rviz" default="True"/>
-    <arg name="rviz_config_file" default="$(find-pkg-share nav2_bringup)/rviz/nav2_default_view.rviz"/>
+    <arg name="rviz_config_file" default="$(find-pkg-share g1_bridge)/config/nav_semantic.rviz"/>
     <arg name="use_localization" default="False"/>
     <arg name="log_level" default="info"/>
     <arg name="semantic" default="false"
          description="Launch semantic navigation nodes (true/false)"/>
+    <arg name="semantic_map" default="~/.ros/semantic_map.json"
+         description="Path to semantic map JSON"/>
 
     <!-- Robot State Publisher for RViz Visualization (Domain 1) -->
     <!-- This only provides robot_description parameter for RViz, doesn't publish TF -->
@@ -56,7 +58,11 @@
 
     <!-- Semantic Navigation (optional) -->
     <group if="$(var semantic)">
-        <node pkg="g1_semantic_nav" exec="semantic_viz" output="screen"/>
-        <node pkg="g1_semantic_nav" exec="nav_goal_server" output="screen"/>
+        <node pkg="g1_semantic_nav" exec="semantic_viz" output="screen">
+            <param name="semantic_json_path" value="$(var semantic_map)"/>
+        </node>
+        <node pkg="g1_semantic_nav" exec="nav_goal_server" output="screen">
+            <param name="semantic_json_path" value="$(var semantic_map)"/>
+        </node>
     </group>
 </launch>

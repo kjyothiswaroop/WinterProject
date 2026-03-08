@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- Semantic Pipeline: extracts object centroids from RTABMap DB via SAM3
+         Run once after mapping to generate semantic_map.json.
+
+         Usage:
+           ros2 launch g1_semantic_nav semantic_pipeline.launch.xml
+           ros2 launch g1_semantic_nav semantic_pipeline.launch.xml semantic_map:=/path/to/map.json
+    -->
+    <arg name="semantic_map" default="~/.ros/semantic_map.json"
+         description="Path to write the semantic map JSON"/>
+
+    <node pkg="g1_semantic_nav" exec="semantic_pipeline" output="screen">
+        <param from="$(find-pkg-share g1_semantic_nav)/config/params.yaml"/>
+        <param name="semantic_json_path" value="$(var semantic_map)"/>
+    </node>
+</launch>

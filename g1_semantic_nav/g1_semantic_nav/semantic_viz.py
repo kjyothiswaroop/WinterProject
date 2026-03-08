@@ -1,4 +1,5 @@
 import json
+import os
 
 import rclpy
 from builtin_interfaces.msg import Duration
@@ -22,7 +23,8 @@ class SemanticViz(Node):
         super().__init__('semantic_viz')
 
         self.declare_parameter('semantic_json_path', '')
-        path = self.get_parameter('semantic_json_path').get_parameter_value().string_value
+        path = os.path.expanduser(
+            self.get_parameter('semantic_json_path').get_parameter_value().string_value)
 
         with open(path, 'r') as f:
             self.semantic_json = json.load(f)
