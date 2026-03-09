@@ -25,6 +25,7 @@ class NavGoalServer(Node):
 
         self.goal_pub   = self.create_publisher(PoseStamped, '/goal_pose', 10)
         self.status_pub = self.create_publisher(String, '/semantic_nav/status', 10)
+        self.tts_pub    = self.create_publisher(String, '/semantic_nav/tts', 10)
         self.create_subscription(String, '/semantic_nav/query', self._on_query, 10)
 
         self.get_logger().info(
@@ -36,13 +37,16 @@ class NavGoalServer(Node):
         self.status_pub.publish(String(data=msg))
 
     def _on_query(self, msg: String):
-        object_name = msg.data.strip()
+        query = msg.data.strip().lower()
+        match = next((k for k in self.semantic_map if k in query), None)
 
-        if object_name not in self.semantic_map:
+        if match is None:
             self._publish_status(
-                f'"{object_name}" not found. Available: {list(self.semantic_map.keys())}')
+                f'"{query}" not found. Available: {list(self.semantic_map.keys())}')
+            self.tts_pub.publish(String(data="Object not found"))
             return
 
+        object_name = match
         centroid = self.semantic_map[object_name]['centroid']
         ox, oy   = centroid[0], centroid[1]
 
@@ -55,6 +59,7 @@ class NavGoalServer(Node):
         pose.pose.orientation.w = 1.0
 
         self.goal_pub.publish(pose)
+        self.tts_pub.publish(String(data=f"Walking to {object_name}"))
         self._publish_status(
             f'Goal sent for "{object_name}" — '
             f'centroid ({ox:.2f}, {oy:.2f}), goal ({ox+0.5:.2f}, {oy+0.5:.2f})')

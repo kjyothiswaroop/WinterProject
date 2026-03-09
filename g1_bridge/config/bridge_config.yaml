@@ -14,5 +14,11 @@ topics:
       durability: transient_local
   cmd_vel:
     type: geometry_msgs/msg/TwistStamped
-    from_domain: 1  
+    from_domain: 1
+    to_domain: 0
+  semantic_nav/query:
+    type: std_msgs/msg/String
+  semantic_nav/tts:
+    type: std_msgs/msg/String
+    from_domain: 1
     to_domain: 0
