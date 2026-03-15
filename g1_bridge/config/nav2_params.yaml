@@ -850,7 +850,7 @@ local_costmap:
           obstacle_max_range: 3.5
           obstacle_min_range: 0.2
           transform_tolerance: 0.5
-          inf_is_valid: true
+          inf_is_valid: false
       static_layer:
         plugin: "nav2_costmap_2d::StaticLayer"
         map_subscribe_transient_local: True
@@ -969,7 +969,7 @@ planner_server:
     GridBased:
       plugin: "nav2_navfn_planner::NavfnPlanner"
       tolerance: 0.1
-      use_astar: true
+      use_astar: false
       allow_unknown: true
 
 smoother_server:
