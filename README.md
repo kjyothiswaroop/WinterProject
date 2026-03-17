@@ -2,7 +2,13 @@
 
 **Semantic Open-Vocabulary Navigation for Humanoid Robots**
 
-[Read the portfolio post here](https://kjyothiswaroop.github.io/project/humanoid-exploration/)
+<p align="center">
+  📄 <a href="https://kjyothiswaroop.github.io/project/humanoid-exploration/"><b>Read the full portfolio post here →</b></a>
+</p>
+
+<p align="center">
+  <img src="assets/unitree_g1_demo.gif" alt="G1 Demo" width="600"/>
+</p>
 
 **Author:** Jyothiswaroop Kasina
 
@@ -13,7 +19,7 @@ Humans navigate indoor spaces not by following coordinates, but through a semant
 This project implements a semantic navigation pipeline on the **Unitree G1** that combines SLAM-based 3D mapping, open-vocabulary object detection (SAM + CLIP), and voice interaction (Whisper) — enabling the robot to navigate to objects described in natural language, such as *"check the fridge and then throw the trash away."*
 
 <p align="center">
-  <img src="docs/combined_pipeline.svg" alt="Combined Pipeline" width="950"/>
+  <img src="assets/combined_pipeline.svg" alt="Combined Pipeline" width="950"/>
 </p>
 
 ## Setup
@@ -125,7 +131,7 @@ You can also test queries manually without voice:
 The Unitree G1's internal SDK communicates over **CycloneDDS** (Domain 0), while the perception and navigation stack runs on **FastDDS** (Domain 1). These two DDS implementations are incompatible — nodes on one domain cannot directly discover or communicate with nodes on the other. The `domain_bridge` node sits between the two and selectively forwards topics across the boundary.
 
 <p align="center">
-  <img src="docs/architecture.svg" alt="Architecture Diagram" width="900"/>
+  <img src="assets/architecture.svg" alt="Architecture Diagram" width="900"/>
 </p>
 
 **Topics bridged (Domain 0 -> 1):** `joint_states`, `tf`, `tf_static`, `robot_description`, `semantic_nav/query`
@@ -139,7 +145,7 @@ The `g1_startup.launch` file runs on Domain 0 and brings up the robot's full TF 
 ### SLAM
 
 <p align="center">
-  <img src="docs/mapping_pipeline.svg" alt="Mapping Pipeline" width="950"/>
+  <img src="assets/mapping_pipeline.svg" alt="Mapping Pipeline" width="950"/>
 </p>
 
 The perception stack uses **RTABMap** for simultaneous localization and mapping. Two sensor configurations are supported:
@@ -152,7 +158,7 @@ Both configurations use `imu_filter_madgwick` for IMU orientation estimation and
 ### Navigation + Semantic Pipeline
 
 <p align="center">
-  <img src="docs/navigation_pipeline.svg" alt="Navigation Pipeline" width="950"/>
+  <img src="assets/navigation_pipeline.svg" alt="Navigation Pipeline" width="950"/>
 </p>
 
 Nav2 runs on Domain 1 with the following pipeline:
