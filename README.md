@@ -74,7 +74,13 @@ objects:
   - blue trash can
 ```
 
-Then run the semantic pipeline to identify object coordinates from the map:
+The semantic pipeline requires a [SAM3](https://github.com/facebookresearch/sam3) segmentation server running on a GPU-equipped machine. Follow the SAM3 GitHub instructions for installation, then start the server:
+
+```bash
+python3 sam3_server.py
+```
+
+Update `server_url` in `g1_semantic_nav/config/params.yaml` to point to the machine running the server. Then run the semantic pipeline to identify object coordinates from the map:
 
 ```bash
 ./domain1.sh ros2 launch g1_semantic_nav semantic_pipeline.launch.xml semantic_map:=~/.ros/semantic_map.json
