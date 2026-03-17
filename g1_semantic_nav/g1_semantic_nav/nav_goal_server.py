@@ -78,8 +78,8 @@ class NavGoalServer(Node):
         pose = PoseStamped()
         pose.header.frame_id    = 'map'
         pose.header.stamp       = self.get_clock().now().to_msg()
-        pose.pose.position.x    = centroid[0] + 1.0
-        pose.pose.position.y    = centroid[1] + 1.0
+        pose.pose.position.x    = centroid[0] - 1.0
+        pose.pose.position.y    = centroid[1] 
         pose.pose.position.z    = 0.0
         pose.pose.orientation.w = 1.0
         return pose
@@ -89,7 +89,7 @@ class NavGoalServer(Node):
         self.status_pub.publish(String(data=msg))
 
     def _split_query(self, query: str) -> list[str]:
-        parts = re.split(r'\s+and\s+|\s+then\s+|\s+after that\s+', query)
+        parts = re.split(r'\s+and then\s+|\s+and\s+|\s+then\s+|\s+after that\s+', query)
         return [p.strip() for p in parts if p.strip()]
 
     def _on_query(self, msg: String):
