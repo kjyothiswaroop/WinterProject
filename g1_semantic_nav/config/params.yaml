@@ -6,6 +6,7 @@
     objects:
       - white fridge
       - yellow board
-      - kitchen
+      - blue trash can
     debug: false
     semantic_json_path: ~/.ros/semantic_map.json
+    clip_threshold: 0.70
