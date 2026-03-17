@@ -197,6 +197,11 @@ Custom-designed pelvis mount for the Intel D435 depth camera. Designed by Nolan.
 
 [](https://github.com/user-attachments/assets/7f2431ab-0111-4e56-a8be-3f95364fa8f1)
 
+## Future Work
+
+- **Autonomous Exploration with VLA + RL**: We attempted to deploy [NaVILA](https://navila-bot.github.io/) using the provided pretrained weights for vision-language-action based navigation, but the results were not reliable enough for deployment. A next step would be to fine-tune the VLA model and combine it with visuo-proprioceptive RL locomotion policies to enable fully autonomous mapping without teleop.
+- **Manipulation and Whole-Body Control**: This project focused on navigation and semantic understanding. The natural extension is to add manipulation and whole-body control so the robot can perform meaningful tasks at the goal location — e.g. opening the fridge or picking up trash — thus closing the loop from language command to physical action.
+
 ## References
 
 - [g1pilot](https://github.com/hucebot/g1pilot) — Unitree G1 teleoperation and control framework
